@@ -17,7 +17,6 @@ private:
     enum GrammarType {
         GR_CODE_BLOCK,
         GR_FUNC,
-        GR_VAR_ASSIGNMENT_COMPLEX,
         GR_VAR_ASSIGNMENT,
         GR_VAR_INCREMENT_DECREMENT,
         GR_IF,
@@ -34,7 +33,6 @@ private:
     void generateExpression(std::list<Token>&);
     GrammarType checkGrammar(std::list<Token>&);
 
-    void parseAssignmentComplex(std::list<Token>&);
     void parseAssignment(std::list<Token>&);
     void parseIncrementDecrement(std::list<Token>&);
     std::list<Expression*> parseOperations(std::list<Token>&);

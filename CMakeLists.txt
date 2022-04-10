@@ -112,4 +112,4 @@ add_executable(
 
         src/compiler/headers/expression/ExpressionOpLogicalAnd.h
         src/compiler/sources/expression/ExpressionOpLogicalAnd.cpp
-)
+        src/compiler/headers/expression/ExpressionOpAssigmentSum.h src/compiler/headers/expression/ExpressionOpAssigmentSub.h src/compiler/headers/expression/ExpressionOpAssigmentMult.h src/compiler/headers/expression/ExpressionOpAssigmentDiv.h src/compiler/sources/expression/ExpressionOpAssigmentSum.cpp src/compiler/sources/expression/ExpressionOpAssigmentSub.cpp src/compiler/sources/expression/ExpressionOpAssigmentMult.cpp src/compiler/sources/expression/ExpressionOpAssigmentDiv.cpp)

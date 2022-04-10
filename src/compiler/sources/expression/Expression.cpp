@@ -19,6 +19,10 @@ ExpressionType Expression::getType() const {
 bool Expression::isOperator() const {
     return (
             type == EXP_OP_ASSIGNMENT ||
+            type == EXP_OP_ASSIGNMENT_SUM ||
+            type == EXP_OP_ASSIGNMENT_SUB ||
+            type == EXP_OP_ASSIGNMENT_MULT ||
+            type == EXP_OP_ASSIGNMENT_DIV ||
             type == EXP_OP_SUM ||
             type == EXP_OP_SUBTRACTION ||
             type == EXP_OP_MULTIPLICATION ||

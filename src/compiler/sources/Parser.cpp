@@ -27,13 +27,16 @@
 #include "ExpressionOpGreater.h"
 #include "ExpressionOpSmaller.h"
 #include "ExpressionOpNotEqual.h"
+#include "ExpressionOpAssigmentSum.h"
+#include "ExpressionOpAssigmentSub.h"
+#include "ExpressionOpAssigmentMult.h"
+#include "ExpressionOpAssigmentDiv.h"
 
 Parser::Parser(const std::string& name):
 grammatics({
     { GR_CODE_BLOCK,              std::regex( R"(\{.*\})" )                                                                                            },
     { GR_FUNC,                    std::regex( R"(@\(.*\))" )                                                                                           },
-    { GR_VAR_ASSIGNMENT_COMPLEX,  std::regex( R"(@[\+\-\*\/]=(\-)?([\(]*((@\(.*\))|[@bids])[\)]*[\+\-\*\/<>GSE\|&])*[\(]*((@\(.*\))|[@bids])[\)]*)" )  },
-    { GR_VAR_ASSIGNMENT,          std::regex( R"(@=(\-)?([\(]*((@\(.*\))|[@bids])[\)]*[\+\-\*\/<>GSE\|&])*[\(]*((@\(.*\))|[@bids])[\)]*)" )            },
+    { GR_VAR_ASSIGNMENT,          std::regex( R"(@((=)|(\+=)|(\-=)|(\*=)|(\/=))(\-)?([\(]*((@\(.*\))|[@bids])[\)]*[\+\-\*\/<>GSE\|&])*[\(]*((@\(.*\))|[@bids])[\)]*)" )  },
     { GR_VAR_INCREMENT_DECREMENT, std::regex( R"(@[ID])" )                                                                                             },
     //{ GR_IF,                      std::regex( R"(if\(.*\)\{.*\}(elseif\(.*\)\{.*\})*(else\(.*\)\{.*\})?)" )                                    },
     { GR_IF,                      std::regex( R"(if\((\-)?([\(]*((@\(.*\))|[@bids])[\)]*[\+\-\*\/<>GSE\|&])*[\(]*((@\(.*\))|[@bids])[\)]*\)\{.*\})" )  },
@@ -119,9 +122,6 @@ void Parser::generateExpression(std::list<Token>& tokens) {
     GrammarType type = checkGrammar(tokens);
 
     switch (type) {
-        case GR_VAR_ASSIGNMENT_COMPLEX:
-            parseAssignmentComplex(tokens);
-            break;
         case GR_VAR_ASSIGNMENT:
             parseAssignment(tokens);
             break;
@@ -161,28 +161,24 @@ Parser::GrammarType Parser::checkGrammar(std::list<Token>& tokens) {
     throw std::overflow_error("wrong grammar");
 }
 
-void Parser::parseAssignmentComplex(std::list<Token>& tokens) {
-    auto var = tokens.front();
-    tokens.pop_front();
-    auto op = tokens.front();
-    tokens.pop_front();
-    auto assign = tokens.front();
-    tokens.pop_front();
-
-    tokens.push_front(op);
-    tokens.push_front(var);
-    tokens.push_front(assign);
-    tokens.push_front(var);
-
-    parseAssignment(tokens);
-}
-
 void Parser::parseAssignment(std::list<Token>& tokens) {
     std::list<Expression*> expressions;
 
     expressions.emplace_back(new ExpressionVarInit(tokens.front().getValue()));
     tokens.pop_front();
-    expressions.emplace_back(new ExpressionOpAssignment());
+
+    auto op = tokens.front().getType();
+    if (op == ASSIGN_OP) {
+        expressions.emplace_back(new ExpressionOpAssignment());
+    } else if (op == ASSIGN_SUM_OP) {
+        expressions.emplace_back(new ExpressionOpAssignmentSum());
+    } else if (op == ASSIGN_SUB_OP) {
+        expressions.emplace_back(new ExpressionOpAssignmentSub());
+    } else if (op == ASSIGN_MULT_OP) {
+        expressions.emplace_back(new ExpressionOpAssignmentMult());
+    } else if (op == ASSIGN_DIV_OP) {
+        expressions.emplace_back(new ExpressionOpAssignmentDiv());
+    }
     tokens.pop_front();
 
     if (tokens.front().getType() == SUB_OP) {

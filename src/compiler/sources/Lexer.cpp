@@ -6,13 +6,13 @@
 #include "Lexer.h"
 
 Lexer::Lexer(): lexems({
-    {LEX_ONE_CHAR,     std::regex(R"([;,\+\-\*\/=\}\{\)\(<>])" )                          },
-    {LEX_TWO_CHAR,     std::regex(R"((\-\-)|(\+\+)|(&&)|(\|\|)|(==)|(<=)|(>=))" )         },
-    {LEX_KEY_WORD,     std::regex( R"((func)|(if)|(else)|(while)|(for)|(true)|(false))" ) },
-    {LEX_STRING,       std::regex( R"("[^"]*")" )                                         },
-    {LEX_INT_DIGIT,    std::regex( R"(0|([1-9][0-9]*))" )                                 },
-    {LEX_DOUBLE_DIGIT, std::regex( R"((0|([1-9][0-9]*))\.*[0-9]*)" )                      },
-    {LEX_ID,           std::regex( R"([a-zA-Z][a-zA-Z0-9_]*)" )                           },
+    {LEX_ONE_CHAR,     std::regex( R"([!;,\+\-\*\/=\}\{\)\(<>])" )                                                },
+    {LEX_TWO_CHAR,     std::regex( R"((\-\-)|(\+\+)|(&&)|(\|\|)|(\+=)|(\-=)|(\*=)|(\/=)|(==)|(!=)|(<=)|(>=))" )   },
+    {LEX_KEY_WORD,     std::regex( R"((func)|(if)|(else)|(while)|(for)|(true)|(false))" )                         },
+    {LEX_STRING,       std::regex( R"("[^"]*")" )                                                                 },
+    {LEX_INT_DIGIT,    std::regex( R"(0|([1-9][0-9]*))" )                                                         },
+    {LEX_DOUBLE_DIGIT, std::regex( R"((0|([1-9][0-9]*))\.*[0-9]*)" )                                              },
+    {LEX_ID,           std::regex( R"([a-zA-Z][a-zA-Z0-9_]*)" )                                                   },
 }) {
 
 }
@@ -163,7 +163,17 @@ TokenType Lexer::checkTwoChar(const std::string &input) {
         return AND_OP;
     } else if (input == "||") {
         return OR_OP;
+    } else if (input == "+=") {
+        return ASSIGN_SUM_OP;
+    } else if (input == "-=") {
+        return ASSIGN_SUB_OP;
+    } else if (input == "*=") {
+        return ASSIGN_MULT_OP;
+    } else if (input == "/=") {
+        return ASSIGN_DIV_OP;
     } else if (input == "==") {
+        return EQUAL_OP;
+    } else if (input == "!=") {
         return EQUAL_OP;
     } else if (input == "<=") {
         return SMALLER_OR_EQUAL_OP;

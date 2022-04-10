@@ -9,8 +9,7 @@ ExpressionOpAssignment::ExpressionOpAssignment() {
 }
 
 void ExpressionOpAssignment::action(const CompilerArgs& args) const {
-
-    auto var = args.stack.top();
+    auto val = args.stack.top();
     args.stack.pop();
     auto id = args.stackVariablesId.top();
     args.stackVariablesId.pop();
@@ -18,12 +17,21 @@ void ExpressionOpAssignment::action(const CompilerArgs& args) const {
     for (auto scope: args.variablesGlobal) {
         auto it = scope->find(id);
         if (it != scope->end()) {
-            scope->insert_or_assign(id, var);
+            auto var = it->second;
+            scope->insert_or_assign(id, val);
+            delete var;
             return;
         }
     }
 
-    args.variables->insert_or_assign(id, var);
+    auto it = args.variables->find(id);
+    if (it != args.variables->end()) {
+        auto var = it->second;
+        args.variables->insert_or_assign(id, val);
+        delete var;
+    } else {
+        args.variables->insert_or_assign(id, val);
+    }
 }
 
 std::string ExpressionOpAssignment::toString() const {

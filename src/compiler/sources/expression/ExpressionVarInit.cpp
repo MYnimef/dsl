@@ -10,7 +10,6 @@ id(value) {
 }
 
 void ExpressionVarInit::action(const CompilerArgs& args) const {
-
     args.stackVariablesId.push(id);
 }
 

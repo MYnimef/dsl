@@ -92,12 +92,24 @@ std::string Token::typeToString() const {
             return "S";
         case EQUAL_OP:
             return "E";
+        case ASSIGN_SUM_OP:
+            return "+=";
+        case ASSIGN_SUB_OP:
+            return "-=";
+        case ASSIGN_MULT_OP:
+            return "*=";
+        case ASSIGN_DIV_OP:
+            return "/=";
     }
 }
 
 bool Token::isOperator() const {
     return (
             type == ASSIGN_OP ||
+            type == ASSIGN_SUM_OP ||
+            type == ASSIGN_SUB_OP ||
+            type == ASSIGN_MULT_OP ||
+            type == ASSIGN_DIV_OP ||
             type == SUM_OP ||
             type == SUB_OP ||
             type == MULT_OP ||

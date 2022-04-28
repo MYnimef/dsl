@@ -37,10 +37,6 @@ VarMap::operator std::string() const {
     return result;
 }
 
-VarMap::operator std::map<Var*, Var*>() const {
-    return value;
-}
-
 Var *VarMap::copy(const int& lineNum) const {
     return new VarMap(lineNum, value);
 }

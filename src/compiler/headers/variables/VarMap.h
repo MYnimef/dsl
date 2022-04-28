@@ -20,7 +20,6 @@ public:
     Var* operator / (const Var& second) const override;
 
     [[nodiscard]] explicit operator std::string          () const override;
-    [[nodiscard]] explicit operator std::map<Var*, Var*> () const override;
 
     [[nodiscard]] Var* copy(const int& lineNum) const override;
 };

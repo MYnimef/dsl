@@ -4,10 +4,11 @@ project(dsl)
 set(CMAKE_CXX_STANDARD 23)
 
 include_directories(src/compiler/headers)
+include_directories(src/compiler/headers/classes)
 include_directories(src/compiler/headers/exceptions)
 include_directories(src/compiler/headers/expressions)
-include_directories(src/compiler/headers/variables)
 include_directories(src/compiler/headers/functions)
+include_directories(src/compiler/headers/variables)
 
 add_executable(
         dsl
@@ -187,4 +188,9 @@ add_executable(
 
         src/compiler/sources/functions/FuncAddToMap.cpp
         src/compiler/headers/functions/FuncAddToMap.h
-)
+
+        src/compiler/headers/variables/VarCustom.h
+        src/compiler/sources/variables/VarCustom.cpp
+
+        src/compiler/headers/classes/ClassMap.h
+        src/compiler/sources/classes/ClassMap.cpp)
